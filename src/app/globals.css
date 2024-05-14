@@ -8,6 +8,13 @@
   --dark: theme(colors.neutral.900);
   --white: theme(colors.white);
   --gray: theme(colors.neutral.100);
+  --accent1: #86d83a;
+  --accent2: #3ad8b6;
+  --accent3: #381e1e;
+}
+
+body {
+  @apply text-neutral-400;
 }
 
 .layout-grid {
