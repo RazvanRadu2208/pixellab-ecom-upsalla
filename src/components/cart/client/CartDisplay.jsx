@@ -1,4 +1,4 @@
-import { cartContext } from '@/context';
+import { cartContext } from '@/contexts';
 import { useContext } from 'react';
 import { CartLineItem } from './CartLineItem';
 import React from 'react';

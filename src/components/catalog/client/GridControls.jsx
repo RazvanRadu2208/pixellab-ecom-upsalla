@@ -1,4 +1,4 @@
-import { uiContext } from '@/context';
+import { uiContext } from '@/contexts';
 import { useContext } from 'react';
 import { TfiViewGrid } from 'react-icons/tfi';
 import { TfiLayoutColumn2 } from 'react-icons/tfi';

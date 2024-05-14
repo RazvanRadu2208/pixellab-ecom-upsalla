@@ -1,4 +1,4 @@
-import { uiContext } from '@/context';
+import { uiContext } from '@/contexts';
 import { useProducts } from '@/hooks';
 import { useContext, useEffect } from 'react';
 
