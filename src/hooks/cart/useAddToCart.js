@@ -1,5 +1,6 @@
 import { cartContext } from '@/contexts';
 import { useContext, useState } from 'react';
+import { baseUrl } from '@/index';
 
 export const useAddToCart = () => {
   const { setCartProducts, cartProducts, cartId } = useContext(cartContext);

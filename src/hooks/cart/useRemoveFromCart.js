@@ -1,5 +1,7 @@
 import { cartContext } from '@/contexts';
+import { baseUrl } from '@/index';
 import { useContext, useState } from 'react';
+
 
 export const useRemoveFromCart = () => {
   const { setCartProducts, cartProducts, cartId } = useContext(cartContext);
