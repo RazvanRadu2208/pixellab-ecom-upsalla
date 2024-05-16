@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { baseUrl } from '..';
 
 // the naviest cache
 let cache = [];

@@ -1,44 +1,27 @@
-import StarRating from '@/components/ui/server/StarRating';
+import React, { useState } from 'react';
 import { useProduct } from '@/hooks';
-import Image from 'next/image';
 import Link from 'next/link';
-import { MdOutlineDeleteForever } from 'react-icons/md';
-import { useState } from 'react';
-import { useAddToCart } from '@/hooks/cart/useAddCart';
-import { useRemoveFromCart } from '@/hooks/cart/useRemoveFromCart';
-import { Spinner } from '@/components/common/client';
+import { IoIosClose } from 'react-icons/io';
+import Image from 'next/image';
+import RatingStar from '@/components/common/rating/RatingStar';
+import { MdDelete } from 'react-icons/md';
 
-export const CartLineItem = ({ product }) => {
+export const CartLineItem = ({ product, removeFromCart }) => {
   const { quantity: initialQuantity, productId } = product;
-
-  const { addToCart } = useAddToCart();
-
-  const { removeFromCart } = useRemoveFromCart();
-
-  const onClick2 = () => {
-    removeFromCart(id);
-    setQuantity((prevQuantity) =>
-      prevQuantity > 1 ? prevQuantity - 1 : prevQuantity,
-    );
-  };
-
-  const onClick = () => {
-    addToCart(id);
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const [quantity, setQuantity] = useState(initialQuantity);
   const { product: fullProduct, loading } = useProduct(productId);
+  const [quantity, setQuantity] = useState(initialQuantity);
 
-  const deleteFromCart = () => {
-    removeFromCart(productId, true);
-  };
+  const Spinner = () => (
+    <div className="flex justify-center items-center h-screen">
+      <p className="loader"></p>
+    </div>
+  );
 
   if (loading) {
     return (
       <tr>
-        <td className="flex justify-center items-center text-center">
-          <Spinner></Spinner>
+        <td>
+          <Spinner />
         </td>
       </tr>
     );
@@ -52,35 +35,43 @@ export const CartLineItem = ({ product }) => {
     );
   }
 
-  const { title, price, image, rating, id } = fullProduct;
+  const { title, price, image, rating } = fullProduct;
 
-  const rate = fullProduct.rating.rate;
+  const { rate, count } = rating;
 
-  const count = fullProduct.rating.count;
+  const handleRemoveFromCart = () => {
+    removeFromCart(product.productId);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity((prevQuantity) =>
+      prevQuantity > 1 ? prevQuantity - 1 : prevQuantity,
+    );
+  };
+
+  const increaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
 
   return (
     <tr className="border-b text-black">
-      <td>
+      <td className="center text-black text-2xl">
         <button
           type="button"
+          onClick={handleRemoveFromCart}
           title={`Remove ${title} from cart`}
-          onClick={deleteFromCart}
         >
-          <MdOutlineDeleteForever size={40} />
+          <IoIosClose size={32}></IoIosClose>
         </button>
       </td>
-
-      <td></td>
-
-      <td className="py-4 px-2 flex gap-4">
+      <td className="py-4 px-2 flex">
         <Link href={`/products/${productId}`}>
           <Image
-            width={70}
-            height={70}
+            width={90}
+            height={90}
             src={image}
-            alt={title}
-            objectFit="contain"
-          />
+            alt={`Image for product ${title}`}
+          ></Image>
         </Link>
 
         <div className="flex flex-col items-start justify-start gap-3">
@@ -89,8 +80,7 @@ export const CartLineItem = ({ product }) => {
           </Link>
 
           <section className="flex items-center justify-center">
-            <StarRating rating={rating}></StarRating>
-
+            <RatingStar rating={rate}></RatingStar>{' '}
             <div className="flex items-center justify-center">
               <span className="pl-4">{rate}</span>
               <span className="pl-4">({count} Reviews)</span>
@@ -98,30 +88,27 @@ export const CartLineItem = ({ product }) => {
           </section>
         </div>
       </td>
-
       <td className="text-center px-2">${price}</td>
-
-      <td style={{ height: '100px' }} className="text-center px-2">
+      <td className="text-center px-2">
         <div className="border border-black flex items-center justify-center gap-1">
           <button
-            onClick={onClick2}
+            onClick={decreaseQuantity}
             aria-label="Decrease quantity"
-            className="text-xl font-semibold hover:bg-gray-200 p-2"
+            className=" p-2"
           >
             -
           </button>
           <span className="px-4">{quantity}</span>
           <button
-            onClick={onClick}
+            onClick={increaseQuantity}
             aria-label="Increase quantity"
-            className="text-xl font-semibold hover:bg-gray-200 p-2"
+            className=" p-2"
           >
             +
           </button>
         </div>
       </td>
-
-      <td className="text-center px-2">${(price * quantity).toFixed(2)}</td>
+      <td className="text-center px-2">{(price * quantity).toFixed(2)}</td>
     </tr>
   );
 };

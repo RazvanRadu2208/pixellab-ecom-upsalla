@@ -7,3 +7,4 @@ export * from './CartLineItem';
 export * from './AddToCart';
 export * from './BackToShop';
 export * from './Coupon';
+export * from './CartPage'

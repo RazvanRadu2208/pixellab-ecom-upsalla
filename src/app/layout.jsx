@@ -1,6 +1,6 @@
 import { Work_Sans } from 'next/font/google';
 import './globals.css';
-import { Footer, Header } from '@/components/component/server';
+import { Footer, Header } from '@/components/common/server';
 import { CartContext, UiContext } from '@/contexts';
 
 const workSans = Work_Sans({ subsets: ['latin'] });

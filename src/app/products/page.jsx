@@ -1,5 +1,4 @@
 import { BackToShop, CartControls } from '@/components/cart/client';
-import { baseUrl } from '@/index';
 import { redirect } from 'next/dist/server/api-utils';
 
 const getProduct = async (productId) => {

@@ -1,4 +1,4 @@
-import { VscArrowSmallLeft } from 'react-icons/vsc';
+import { VscArrowSmallLeft } from "react-icons/vsc";
 
 export const BackToShop = () => {
   return (

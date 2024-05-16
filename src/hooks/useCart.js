@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { baseUrl } from '..';
 
 export const useCart = (cartId = 2) => {
   const [cartProducts, setCartProducts] = useState([]);

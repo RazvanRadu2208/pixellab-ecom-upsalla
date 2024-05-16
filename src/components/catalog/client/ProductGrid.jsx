@@ -1,86 +1,60 @@
-import { useProducts } from '@/hooks';
-import { ProductTile, ProductsPerPage } from '.';
+import { ProductTile } from '.';
 import { css } from '@emotion/css';
+import { useProducts } from '../../../hooks';
 import { useContext, useEffect, useState } from 'react';
 import { uiContext } from '@/contexts';
-import { Error404, Spinner } from '@/components/common/client';
+
+const Spinner = () => (
+  <div className="flex justify-center items-center h-screen">
+    <p className="loader"></p>
+  </div>
+);
 
 export const ProductGrid = () => {
-  const { itemsPerRow, pagination, setPagination } = useContext(uiContext);
+  const { itemsPerRow, pagination } = useContext(uiContext);
   const { perPage, page } = pagination;
   const { products, loading, error } = useProducts();
   const [paginatedProducts, setPaginatedProducts] = useState([]);
-  const [animate, setAnimate] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
-    const filteredProducts =
-      selectedCategory === 'all'
-        ? products
-        : products.filter((product) => product.category === selectedCategory);
-
-    const newPaginatedProducts = filteredProducts
+    const newPaginatedProducts = products
       .slice()
       .splice(perPage * (page - 1), perPage);
 
     setPaginatedProducts(newPaginatedProducts);
-    setAnimate(true);
-    const timer = setTimeout(() => setAnimate(false), 1000);
-    setPagination({ ...pagination, total: filteredProducts.length });
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [products, perPage, page, itemsPerRow, selectedCategory]);
+  }, [products, perPage, page]);
 
   const gridCssClass = css`
     display: grid;
     row-gap: 32px;
-    animation: ${animate ? 'fadeIn 1s' : 'none'};
 
     @media (min-width: 1024px) {
+      column-gap: 32px;
       grid-template-columns: repeat(${itemsPerRow}, 1fr);
     }
   `;
 
-  const handleProductsPerPageChange = (newPerPage) => {
-    setPagination({ ...pagination, perPage: newPerPage, page: 1 });
-  };
-
   if (loading) {
+    return <Spinner></Spinner>;
+  }
+
+  if (error.trim().length > 0) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner></Spinner>;
+      <div className="container mx-auto px-4">
+        {' '}
+        <p className="text-red-600">{error}</p>
       </div>
     );
   }
 
-  if (error.trim().length > 0) {
-    return <Error404></Error404>;
-  }
-
   return (
     <>
-      <section className="flex flex-col justify-center items-center">
-        <ProductsPerPage onChange={handleProductsPerPageChange} />
-        <div>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="mb-4"
-          >
-            <option value="all">All Categories</option>
-            <option value="men's clothing">Men Clothing</option>
-            <option value="women's clothing">Women Clothing</option>
-            <option value="jewelery">Jewelery</option>
-            <option value="electronics">Electronics</option>
-          </select>
-        </div>
-      </section>
-      <ul className={`${gridCssClass} gap-2`}>
+      <ul className={gridCssClass}>
         {paginatedProducts.map((product) => {
           const { id } = product;
 
           return (
-            <li key={id} className="flex justify-center">
+            <li key={id} className="flex opacity-100">
               <ProductTile product={product}></ProductTile>
             </li>
           );
