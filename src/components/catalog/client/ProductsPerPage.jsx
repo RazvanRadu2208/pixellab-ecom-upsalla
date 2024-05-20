@@ -9,7 +9,7 @@ export const ProductsPerPage = ({ onChange }) => {
       <select
         name="perPage"
         id="perPage"
-        onchange={(e) => onchange(parseInt(e.target.value, 10))}
+        onChange={(e) => onChange(parseInt(e.target.value, 10))}
       >
         {options.map((option) => (
           <option key={option} value={option}>

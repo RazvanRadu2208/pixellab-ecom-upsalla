@@ -1,6 +1,5 @@
 import StarRating from '@/components/ui/server/StarRating';
 import { useProduct } from '@/hooks';
-import { baseUrl } from '@/index';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MdOutlineDeleteForever } from 'react-icons/md';
